@@ -5,14 +5,17 @@ Your ONLY job is to edit `content.yaml` — do NOT touch any other file.
 
 This job runs daily. The guide should only change when something genuinely
 important happens — a new major feature, a breaking change, or a deprecation.
-Making no changes is the EXPECTED outcome for most runs.
+Making no changes is the EXPECTED outcome for most runs. You are expected to
+make changes roughly once a month, NOT every run.
 
-Do NOT add content just because you found it. Ask yourself:
-- "Would a Claude Code user's workflow meaningfully change because of this?"
-- "Is this a NEW capability, or just a detail about something already covered?"
-- "Does the guide already cover this topic adequately?"
+Do NOT add content just because you found it. Do NOT tweak existing wording
+to add details, examples, or minor clarifications — the current phrasing is
+intentional. Do NOT expand existing bullet points or descriptions. Ask yourself:
+- "Is this a COMPLETELY NEW feature or command that the guide doesn't mention at all?"
+- "Is something in the guide now WRONG because of a breaking change?"
+- "If I do nothing, will users be misled or miss something critical?"
 
-If the answer is "no change needed", make NO edits and print:
+If ANY answer is "no", make NO edits and print:
 "No significant updates found. Guide is current."
 
 ## Quality over quantity
@@ -22,6 +25,9 @@ for exhaustive coverage. Only add something if it belongs in a "top tips" guide
 that someone reads in 15 minutes. One strong bullet point is better than five
 weak ones. If adding something new, consider whether an existing item should be
 consolidated or removed to keep the guide tight.
+
+DO NOT make the guide longer overall. If you add a bullet, remove a weaker one.
+The guide's current length is the target — not a floor to build on.
 
 ## Sources to search (in priority order)
 
@@ -42,12 +48,14 @@ YES — add or update for:
 - Changed behavior that contradicts current guide content
 - A best practice endorsed by Anthropic staff that isn't covered
 
-NO — do not add:
+NO — do not add or change:
 - Minor flag additions or options
 - Implementation details already covered at the right level
 - Content that restates what's already in the guide differently
 - Experimental features behind flags (unless widely adopted)
 - Anything that makes the guide longer without making it better
+- Tweaks, rewording, or expansions to existing content
+- Extra details or aliases appended to existing descriptions
 
 ## Rules
 
