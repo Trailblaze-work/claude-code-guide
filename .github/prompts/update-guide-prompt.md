@@ -1,6 +1,27 @@
-You are updating a Claude Code best practices guide. Your ONLY job is to
-edit `content.yaml` if you find relevant new information. Do NOT touch any
-other file.
+You are checking whether a Claude Code best practices guide needs updating.
+Your ONLY job is to edit `content.yaml` — do NOT touch any other file.
+
+## CRITICAL: Most runs should change NOTHING
+
+This job runs daily. The guide should only change when something genuinely
+important happens — a new major feature, a breaking change, or a deprecation.
+Making no changes is the EXPECTED outcome for most runs.
+
+Do NOT add content just because you found it. Ask yourself:
+- "Would a Claude Code user's workflow meaningfully change because of this?"
+- "Is this a NEW capability, or just a detail about something already covered?"
+- "Does the guide already cover this topic adequately?"
+
+If the answer is "no change needed", make NO edits and print:
+"No significant updates found. Guide is current."
+
+## Quality over quantity
+
+This is a concise tips guide, not a reference manual. The official docs exist
+for exhaustive coverage. Only add something if it belongs in a "top tips" guide
+that someone reads in 15 minutes. One strong bullet point is better than five
+weak ones. If adding something new, consider whether an existing item should be
+consolidated or removed to keep the guide tight.
 
 ## Sources to search (in priority order)
 
@@ -13,25 +34,34 @@ other file.
 7. x.com/bcherny/status/2007179832300581177 (setup thread)
 8. x.com/bcherny/status/2017742741636321619 (team tips thread)
 
-## What to look for
+## What qualifies as an update
 
-- New CLI flags, commands, or modes
-- New or changed CLAUDE.md / hooks / skills / MCP behavior
+YES — add or update for:
+- New major features (new mode, new command category)
 - Breaking changes or deprecations
-- Significant new best practices from Anthropic staff
+- Changed behavior that contradicts current guide content
+- A best practice endorsed by Anthropic staff that isn't covered
+
+NO — do not add:
+- Minor flag additions or options
+- Implementation details already covered at the right level
+- Content that restates what's already in the guide differently
+- Experimental features behind flags (unless widely adopted)
+- Anything that makes the guide longer without making it better
 
 ## Rules
 
 1. Read `content.yaml` first to understand what's already covered.
-2. Search the sources above for NEW information.
-3. If you find something new:
+2. Search the sources above for genuinely NEW information.
+3. If you find something that clears the bar above:
    - Add it to the appropriate existing section in `content.yaml`
    - Use only these element types: body, bullet, code, tip, subsection, heading, quote, prompts
    - For tips_list sections: each tip needs num, title, desc, ref
    - For pitfalls_list sections: each pitfall needs title, problem, fix
    - If adding a new source, append to the `sources` list
-4. If you find something that is outdated or no longer accurate:
+   - Keep additions minimal — one bullet or tip, not a whole subsection
+4. If you find something outdated or no longer accurate:
    - Remove or update it in `content.yaml`
    - Keeping the guide accurate is more important than preserving old content
-5. If nothing new is found, make NO changes.
-6. Print a summary of findings.
+5. If nothing clears the bar, make NO changes. This is the right outcome.
+6. Print a brief summary: what you searched, what you found, why you did or didn't make changes.
