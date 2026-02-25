@@ -5,8 +5,8 @@ Your ONLY job is to edit `content.yaml` — do NOT touch any other file.
 
 This job runs daily. The guide should only change when something genuinely
 important happens — a new major feature, a breaking change, or a deprecation.
-Making no changes is the EXPECTED outcome for most runs. You are expected to
-make changes roughly once a month, NOT every run.
+Making no changes is the EXPECTED outcome for most runs — but when a major
+release or new feature drops, update immediately.
 
 Do NOT add content just because you found it. Do NOT tweak existing wording
 to add details, examples, or minor clarifications — the current phrasing is
