@@ -10,7 +10,7 @@ sections:
     tips:
       - num: "1"
         title: "Use the best model with thinking"
-        desc: "A wrong fast answer is slower than a right slow answer. Use Opus + extended thinking."
+        desc: "A wrong fast answer is slower than a right slow answer. Use Opus + extended thinking. The opusplan alias auto-switches: Opus during Plan Mode, Sonnet for execution."
         ref: "See: Boris Cherny's Workflow"
       - num: "2"
         title: "Give Claude a way to verify its work"
