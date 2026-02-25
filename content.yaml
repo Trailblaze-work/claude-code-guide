@@ -138,6 +138,10 @@ sections:
       - bullet: "./CLAUDE.local.md -- Local only (.gitignore this)"
       - bullet: "Parent directories -- Useful for monorepos"
       - bullet: "Child directories -- Loaded on demand"
+      - tip: >-
+          Run /init to auto-generate a starter CLAUDE.md. It analyzes your codebase
+          to detect build systems, test frameworks, and code patterns. Use it as a
+          baseline, then refine over time.
       - subsection: "What to Include"
       - bullet: "Bash commands Claude can't guess (build, test, lint)"
       - bullet: "Code style rules that differ from defaults"
@@ -181,6 +185,7 @@ sections:
           /clear              Reset context entirely
           /compact [focus]     Compress, optionally keep a focus
           /context             Visualize current context usage
+          /sandbox             Toggle OS-level filesystem/network isolation
           /statusline          Set up the status line UI
       - subsection: "When to Clear"
       - bullet: "Between unrelated tasks -- always"
@@ -281,6 +286,50 @@ sections:
       - bullet: "Claude Code desktop app -- visual session management"
       - bullet: "claude.ai/code -- Anthropic's cloud, isolated VMs"
       - bullet: "Terminal tabs -- numbered 1-5, with OS notifications"
+      - bullet: "Agent Teams (experimental) -- coordinated multi-instance sessions with shared task list"
+      - subsection: "Remote Control: Continue from Any Device"
+      - body: >-
+          Start a session locally and continue it from your phone or any browser.
+          Your full local environment (filesystem, MCP, tools) stays available.
+          Runs on Pro and Max plans only.
+      - code: |
+          # Start a Remote Control session
+          claude remote-control
+
+          # Or from inside an existing session:
+          /remote-control    (shortcut: /rc)
+      - bullet: "Connect via claude.ai/code or the Claude iOS/Android app"
+      - bullet: "Press spacebar to show a QR code for quick phone access"
+      - bullet: "Use /rename first to give the session a descriptive name"
+      - tip: >-
+          Remote Control keeps Claude running on your machine -- nothing moves to the cloud.
+          Use claude.ai/code (without Remote Control) when you want a fully cloud-hosted session
+          with no local process to keep open.
+      - subsection: "Agent Teams (Experimental)"
+      - body: >-
+          Coordinate multiple Claude Code instances as a team. One session acts as
+          team lead; teammates each have their own context window and can message
+          each other directly -- unlike subagents which only report back to the
+          main agent. Enable via the CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS env var.
+      - code: |
+          # Enable in settings.json or shell env
+          CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+
+          # Ask Claude to create a team
+          Create an agent team: one focused on security,
+          one on performance, one on test coverage.
+
+          # Control teammate display mode
+          claude --teammate-mode in-process   # all in one terminal
+          claude --teammate-mode tmux         # split panes (requires tmux)
+      - bullet: "Teammates coordinate via shared task list and direct messaging"
+      - bullet: "Shift+Down cycles through teammates in in-process mode"
+      - bullet: "Require plan approval before a teammate implements: 'spawn X, require plan approval'"
+      - bullet: "Best for: parallel review, competing hypotheses, cross-layer changes"
+      - bullet: "Not for: sequential tasks, same-file edits, routine work (token cost scales per teammate)"
+      - tip: >-
+          Start with 3-5 teammates and 5-6 tasks each. Use subagents for focused tasks;
+          use agent teams when teammates need to share findings and coordinate on their own.
       - subsection: "The Writer/Reviewer Pattern"
       - bullet: "Session A (Writer): Implement the feature"
       - bullet: "Session B (Reviewer): Review in a fresh context"
@@ -299,6 +348,9 @@ sections:
       - code: |
           claude -p "prompt"                            # One-off
           claude -p "prompt" --output-format json       # Structured
+          claude -p "prompt" --max-budget-usd 2.00      # Cap spend per run
+          claude -p "prompt" --max-turns 5              # Limit agentic turns
+          claude -p "prompt" --fallback-model sonnet    # Fallback if overloaded
 
           # Fan-out with worktree isolation per task
           for file in $(cat files.txt); do
@@ -327,6 +379,35 @@ sections:
           3. Write tests, commit, push, create PR
       - bullet: "Personal skills: ~/.claude/skills/"
       - bullet: "Team skills: .claude/skills/ (commit to git)"
+      - subsection: "Advanced Skill Features"
+      - bullet: "context: fork -- run skill in an isolated subagent with its own context"
+      - bullet: "user-invocable: false -- Claude auto-invokes it, hidden from the / menu"
+      - bullet: "$ARGUMENTS[N] or $N -- access arguments by position ($0, $1, $2...)"
+      - bullet: "${CLAUDE_SESSION_ID} -- inject current session ID into skill content"
+      - body: "Dynamic context injection: run shell commands before Claude sees the prompt."
+      - code: |
+          # .claude/skills/pr-summary/SKILL.md
+          ---
+          name: pr-summary
+          context: fork
+          agent: Explore
+          allowed-tools: Bash(gh *)
+          ---
+          PR diff: !`gh pr diff`
+          PR comments: !`gh pr view --comments`
+          Summarize this pull request.
+      - tip: >-
+          The !`command` syntax runs shell commands at skill-load time. Output replaces
+          the placeholder before Claude sees anything -- Claude only gets the rendered result.
+          To trigger extended thinking in a skill, include the word "ultrathink" anywhere in
+          the content.
+      - subsection: "Plugins"
+      - body: >-
+          Plugins bundle skills, hooks, subagents, and MCP servers into a single
+          installable unit from the community or Anthropic. Run /plugin to browse.
+      - bullet: "Install a plugin: /plugin install <name>"
+      - bullet: "Code intelligence plugins add symbol navigation and automatic error detection"
+      - bullet: "Plugin skills use a plugin-name:skill-name namespace -- no name conflicts"
       - subsection: "Hooks"
       - quote:
           text: >-
@@ -479,3 +560,4 @@ sources:
   - "Team tips: x.com/bcherny/status/2017742741636321619"
   - "anthropic.com/engineering/claude-code-best-practices"
   - "thenewstack.io | nathanfox.net | Kent Beck via Pragmatic Engineer"
+  - "code.claude.com/docs/en/cli-reference | /en/skills | /en/remote-control | /en/agent-teams"
