@@ -1,0 +1,481 @@
+cover:
+  title: "Claude Code"
+  subtitle: "Tips & Best Practices"
+  brand_image: "trailblaze-brand.png"
+
+sections:
+  - title: "The 10 Tips That Matter Most"
+    type: tips_list
+    new_page: true
+    tips:
+      - num: "1"
+        title: "Use the best model with thinking"
+        desc: "A wrong fast answer is slower than a right slow answer. Use Opus + extended thinking."
+        ref: "See: Boris Cherny's Workflow"
+      - num: "2"
+        title: "Give Claude a way to verify its work"
+        desc: "Tests, screenshots, linters -- any feedback loop. This alone 2-3x quality."
+        ref: "See: Verification"
+      - num: "3"
+        title: "Be specific in your prompts"
+        desc: "Reference files with @, paste screenshots, point to patterns. Vague = wasted tokens."
+        ref: "See: Prompting & Context"
+      - num: "4"
+        title: "Plan first, code second"
+        desc: "Start in Plan Mode (Shift+Tab x2). Iterate until solid, then auto-accept."
+        ref: "See: Plan Mode"
+      - num: "5"
+        title: "Invest in your CLAUDE.md"
+        desc: "Every mistake becomes a rule. Check it into git. The whole team contributes."
+        ref: "See: The CLAUDE.md System"
+      - num: "6"
+        title: "Use /clear between tasks"
+        desc: "Context degrades as the window fills. Clear aggressively between tasks."
+        ref: "See: Context Management"
+      - num: "7"
+        title: "Parallelize everything"
+        desc: "Run 3-5+ sessions with claude --worktree. The single biggest productivity unlock."
+        ref: "See: Parallel Sessions & Subagents"
+      - num: "8"
+        title: "Use subagents for research"
+        desc: "Delegate investigation to subagents. Your main context stays clean."
+        ref: "See: Parallel Sessions & Subagents"
+      - num: "9"
+        title: "Build reusable slash commands"
+        desc: "Convert repeated workflows into skills in .claude/skills/. Commit to git."
+        ref: "See: Skills, Hooks & MCP"
+      - num: "10"
+        title: "Use TDD for bug fixes"
+        desc: "Write a failing test first, then let Claude fix it. Tests constrain scope and prevent regressions."
+        ref: "See: Test-Driven Development"
+
+  - title: "Plan Mode: Think Before You Code"
+    content:
+      - quote:
+          text: >-
+            Most of my sessions start in Plan mode. If the goal is a Pull Request, I use Plan
+            mode and go back and forth with Claude until I like its plan. From there, I switch
+            into auto-accept mode and Claude can usually one-shot it.
+      - body: >-
+          Plan Mode restricts Claude to read-only operations -- it explores your codebase
+          and creates implementation plans without writing code. Toggle with Shift+Tab
+          (cycles Normal -> Auto-Accept -> Plan) or type /plan.
+      - subsection: "The Four-Phase Workflow"
+      - heading: "1. Explore (Plan Mode)"
+      - body: "Have Claude read and understand the relevant code."
+      - code: |
+          read /src/auth and understand how sessions work.
+          also check how we manage environment variables.
+      - heading: "2. Plan (Plan Mode)"
+      - body: "Ask for a detailed plan. Press Ctrl+G to edit it in your text editor."
+      - code: |
+          I want to add Google OAuth. What files need to change?
+          What's the session flow? Create a plan.
+      - heading: "3. Implement (Normal Mode)"
+      - body: "Switch back (Shift+Tab). Let Claude code, verifying against its plan."
+      - code: |
+          Implement the OAuth flow from your plan.
+          Write tests, run them, and fix any failures.
+      - heading: "4. Commit"
+      - code: "Commit with a descriptive message and open a PR."
+      - tip: >-
+          Skip Plan Mode for small, clear tasks (typos, log lines, renames). Use it when
+          the approach is uncertain, changes span multiple files, or you're unfamiliar with the code.
+      - subsection: "Advanced: Two-Session Planning"
+      - body: >-
+          Have one Claude write the plan, then deploy a second instance to review it
+          as a staff engineer. When issues arise, return to Plan Mode rather than pushing forward.
+
+  - title: "Verification: Give Claude a Feedback Loop"
+    content:
+      - quote:
+          text: >-
+            Give Claude a way to verify its work. If Claude has that feedback loop, it will
+            2-3x the quality. This is probably the most important thing.
+      - body: >-
+          Claude performs dramatically better when it can check its own work. Without clear
+          success criteria, you become the only feedback loop.
+      - subsection: "Test-Driven Verification"
+      - body: "Include test cases so Claude verifies after implementing:"
+      - code: |
+          Write a validateEmail function.
+          Test cases: user@example.com -> true,
+          invalid -> false, user@.com -> false.
+          Run the tests after implementing.
+      - subsection: "Visual Verification"
+      - body: "Paste a screenshot and ask Claude to compare:"
+      - code: |
+          [paste screenshot] Implement this design.
+          Take a screenshot of the result and compare
+          it to the original. List differences and fix them.
+      - subsection: "Root Cause Verification"
+      - code: |
+          The build fails with this error: [paste error].
+          Fix it and verify the build succeeds.
+          Address the root cause, don't suppress the error.
+      - subsection: "Challenge Claude as Reviewer"
+      - body: "Flip the dynamic -- ask Claude to review rigorously:"
+      - bullet: '"Grill me on these changes"'
+      - bullet: '"Prove to me this works"'
+      - bullet: '"Review for edge cases, race conditions, and security issues"'
+      - bullet: '"What''s the behavioral diff between this branch and main?"'
+      - tip: >-
+          Verification can be a test suite, linter, bash command, or browser extension.
+          The Claude in Chrome extension opens tabs, tests UI, and iterates until it works.
+
+  - title: "The CLAUDE.md System"
+    content:
+      - quote:
+          text: >-
+            Invest in your CLAUDE.md. Anytime you see Claude do something incorrectly, add it
+            so Claude knows not to do it next time. The file compounds in value over time.
+      - body: >-
+          CLAUDE.md is read at the start of every conversation. It stores persistent context
+          Claude cannot infer from code alone.
+      - subsection: "File Hierarchy"
+      - bullet: "~/.claude/CLAUDE.md -- Global: all sessions"
+      - bullet: "./CLAUDE.md -- Project root: check into git, shared with team"
+      - bullet: "./CLAUDE.local.md -- Local only (.gitignore this)"
+      - bullet: "Parent directories -- Useful for monorepos"
+      - bullet: "Child directories -- Loaded on demand"
+      - subsection: "What to Include"
+      - bullet: "Bash commands Claude can't guess (build, test, lint)"
+      - bullet: "Code style rules that differ from defaults"
+      - bullet: "Testing instructions and preferred runners"
+      - bullet: "Repo etiquette (branch naming, PR conventions)"
+      - bullet: "Architectural decisions and common gotchas"
+      - subsection: "What NOT to Include"
+      - bullet: "Things Claude can figure out by reading code"
+      - bullet: "Standard conventions Claude already knows"
+      - bullet: "Detailed API docs (link instead), long tutorials"
+      - bullet: "Self-evident practices like 'write clean code'"
+      - subsection: "Example"
+      - code: |
+          # Code style
+          - Use ES modules (import/export), not CommonJS
+          - Destructure imports when possible
+
+          # Workflow
+          - Typecheck when done making code changes
+          - Prefer running single tests, not the whole suite
+
+          # Build
+          - Test: npm run test -- --testPathPattern=<file>
+          - Lint: npm run lint
+      - subsection: "Importing Other Files"
+      - code: |
+          See @README.md for project overview.
+          Git workflow: @docs/git-instructions.md
+      - tip: >-
+          Keep it concise. For each line, ask: 'Would removing this cause mistakes?' If not,
+          cut it. Bloated files cause Claude to ignore your instructions. Use IMPORTANT or
+          YOU MUST for critical rules.
+
+  - title: "Context Management"
+    content:
+      - body: >-
+          Most best practices reduce to one constraint: Claude's context window fills up
+          fast, and performance degrades as it fills.
+      - subsection: "The Core Commands"
+      - code: |
+          /clear              Reset context entirely
+          /compact [focus]     Compress, optionally keep a focus
+          /context             Visualize current context usage
+          /statusline          Set up the status line UI
+      - subsection: "When to Clear"
+      - bullet: "Between unrelated tasks -- always"
+      - bullet: "After two failed corrections -- start fresh with a better prompt"
+      - bullet: "When Claude starts 'forgetting' instructions"
+      - bullet: "Before starting a new feature or bug fix"
+      - subsection: "Partial Compaction"
+      - body: >-
+          Esc+Esc (or /rewind), select a checkpoint, choose 'Summarize from here'.
+          Or: /compact Focus on the API changes -- directs what to keep.
+      - subsection: "Course-Correct Early"
+      - bullet: "Ctrl+C -- Stop Claude mid-action (context preserved)"
+      - bullet: "Esc+Esc or /rewind -- Restore previous state"
+      - bullet: '"Undo that" -- Revert changes'
+      - subsection: "Sessions & Checkpoints"
+      - code: |
+          claude --continue    # Resume most recent conversation
+          claude --resume      # Pick from recent sessions
+          /rename my-feature   # Name sessions
+      - body: >-
+          Every action creates a checkpoint. Checkpoints persist across sessions -- close
+          your terminal and rewind later. Try risky things freely.
+
+  - title: "Prompting & Context"
+    content:
+      - body: "The more precise your instructions, the fewer corrections you need."
+      - subsection: "Good vs. Bad Prompts"
+      - prompts:
+          - bad: 'Vague: "add tests for foo.py"'
+            good: "Better: \"Write a test for foo.py covering the edge case where\nthe user is logged out. Avoid mocks.\""
+          - bad: 'Vague: "fix the login bug"'
+            good: "Better: \"Users report login fails after session timeout.\nCheck src/auth/, especially token refresh. Write a failing\ntest that reproduces the issue, then fix it.\""
+          - bad: 'Vague: "add a calendar widget"'
+            good: "Better: \"Look at how existing widgets are implemented.\nHotDogWidget.php is a good example. Follow the pattern.\""
+      - subsection: "Ways to Provide Rich Context"
+      - bullet: "Use @ to reference files -- Claude reads them before responding"
+      - bullet: "Paste images directly (Ctrl+V)"
+      - bullet: "Give URLs for documentation and API references"
+      - bullet: "Pipe data in: cat error.log | claude"
+      - bullet: "Tell Claude to fetch context itself using bash or MCP tools"
+      - subsection: "Let Claude Interview You"
+      - body: "For larger features, have Claude interview you to surface edge cases and tradeoffs."
+      - code: |
+          I want to build [brief description].
+          Interview me using the AskUserQuestion tool.
+          Dig into edge cases and tradeoffs.
+          Then write a complete spec to SPEC.md.
+      - tip: >-
+          Once the spec is done, start a fresh session to execute it. Clean context
+          focused entirely on implementation.
+
+  - title: "Parallel Sessions & Subagents"
+    content:
+      - quote:
+          text: >-
+            I run 5 Claude instances in parallel in my terminal, and 5-10 Claudes on
+            claude.ai/code. I treat AI as a capacity you schedule.
+      - subsection: "Git Worktrees (the #1 Productivity Unlock)"
+      - body: >-
+          Claude Code has native worktree support via the --worktree (-w) flag.
+          Each worktree gets its own working directory and branch -- no file
+          collisions between parallel sessions. Repository history and remotes
+          are shared.
+      - code: |
+          # Start Claude in a named worktree
+          # Creates .claude/worktrees/feature-auth/ with branch worktree-feature-auth
+          claude --worktree feature-auth
+
+          # Auto-generate a random name (e.g. bright-running-fox)
+          claude --worktree
+
+          # Run multiple worktree sessions in parallel
+          claude -w feature-auth &
+          claude -w bugfix-123 &
+      - bullet: "Worktrees live at <repo>/.claude/worktrees/<name>"
+      - bullet: "Branch is named worktree-<name>, based on the default remote branch"
+      - bullet: "You can also ask Claude mid-session: \"work in a worktree\""
+      - bullet: "Add .claude/worktrees/ to .gitignore to keep git status clean"
+      - body: "Cleanup is automatic:"
+      - bullet: "No changes: worktree and branch are removed on exit"
+      - bullet: "Changes exist: Claude prompts you to keep or remove"
+      - bullet: "Manual cleanup: git worktree list / git worktree remove <path>"
+      - body: "Subagents can also run in isolated worktrees:"
+      - code: |
+          # In .claude/agents/migrator.md frontmatter:
+          ---
+          name: migrator
+          description: Migrate files to new API
+          isolation: worktree
+          ---
+      - bullet: "Each subagent gets its own worktree, cleaned up automatically"
+      - bullet: "Great for batch migrations and parallel refactors"
+      - tip: >-
+          For non-git VCS (SVN, Perforce, Mercurial), configure WorktreeCreate
+          and WorktreeRemove hooks to replace the default git behavior.
+      - subsection: "Ways to Run in Parallel"
+      - bullet: "claude -w <name> -- each session in its own worktree, run in separate terminals"
+      - bullet: "Claude Code desktop app -- visual session management"
+      - bullet: "claude.ai/code -- Anthropic's cloud, isolated VMs"
+      - bullet: "Terminal tabs -- numbered 1-5, with OS notifications"
+      - subsection: "The Writer/Reviewer Pattern"
+      - bullet: "Session A (Writer): Implement the feature"
+      - bullet: "Session B (Reviewer): Review in a fresh context"
+      - bullet: "Session A: Apply the feedback"
+      - subsection: "Subagents"
+      - body: "Run in separate context windows, report back summaries."
+      - code: |
+          Use subagents to investigate how our auth system
+          handles token refresh, and whether we have
+          existing OAuth utilities to reuse.
+      - bullet: 'Research: "use subagents to investigate X"'
+      - bullet: 'Verification: "use a subagent to review this code"'
+      - bullet: 'Scale: "use 5 subagents to explore the codebase"'
+      - bullet: "Background: Ctrl+B to send to background"
+      - subsection: "Headless Mode & Fan-Out"
+      - code: |
+          claude -p "prompt"                            # One-off
+          claude -p "prompt" --output-format json       # Structured
+
+          # Fan-out with worktree isolation per task
+          for file in $(cat files.txt); do
+            claude -w --dangerously-skip-permissions \
+              -p "Migrate $file" &
+          done
+
+  - title: "Skills, Hooks & MCP"
+    content:
+      - subsection: "Skills (Custom Slash Commands)"
+      - quote:
+          text: >-
+            I use slash commands for every 'inner loop' workflow. Commands are checked into
+            git. Claude and I use /commit-push-pr dozens of times daily.
+      - body: "Store in .claude/skills/<name>/SKILL.md. Invoke with /<name>."
+      - code: |
+          # .claude/skills/fix-issue/SKILL.md
+          ---
+          name: fix-issue
+          description: Fix a GitHub issue
+          disable-model-invocation: true
+          ---
+          Analyze and fix: $ARGUMENTS.
+          1. gh issue view for details
+          2. Search codebase, implement fix
+          3. Write tests, commit, push, create PR
+      - bullet: "Personal skills: ~/.claude/skills/"
+      - bullet: "Team skills: .claude/skills/ (commit to git)"
+      - subsection: "Hooks"
+      - quote:
+          text: >-
+            I use a PostToolUse hook to auto-format Claude's code output. This prevents
+            CI errors from minor formatting issues.
+      - body: "Unlike CLAUDE.md (advisory), hooks are deterministic -- always execute."
+      - bullet: "/hooks for interactive configuration"
+      - bullet: "Ask Claude: 'Write a hook that runs eslint after every file edit'"
+      - bullet: "Configured in .claude/settings.json"
+      - subsection: "MCP (Model Context Protocol)"
+      - body: "Connect Claude to external tools. Configure in .mcp.json."
+      - code: "claude mcp add <server-name>"
+      - bullet: "Slack: paste bug threads and say 'fix'"
+      - bullet: "Databases: run analytics queries in Claude"
+      - bullet: "Monitoring: read Sentry errors, CI logs"
+      - bullet: "Design: integrate Figma designs"
+      - subsection: "Custom Subagents"
+      - code: |
+          # .claude/agents/security-reviewer.md
+          ---
+          name: security-reviewer
+          tools: Read, Grep, Glob, Bash
+          model: opus
+          ---
+          Review for injection, auth flaws, secrets.
+      - subsection: "Permissions"
+      - quote:
+          text: >-
+            Use /permissions to pre-allow safe commands rather than broadly skipping
+            security checks with --dangerously-skip-permissions.
+
+  - title: "Boris Cherny's Workflow"
+    content:
+      - body: >-
+          Boris created Claude Code and leads the team at Anthropic. Distilled from
+          his X/Twitter threads in January-February 2026.
+      - subsection: "Setup"
+      - bullet: "Terminal: Ghostty (synchronized rendering, GPU acceleration)"
+      - bullet: "Model: Opus with extended thinking for everything"
+      - bullet: "5 terminal tabs + 5-10 sessions on claude.ai/code + mobile"
+      - bullet: "Status line showing context usage and current branch"
+      - subsection: "Daily Workflow"
+      - bullet: "Starts most sessions in Plan Mode"
+      - bullet: "Iterates on plans, then auto-accept for one-shot implementation"
+      - bullet: "Uses /commit-push-pr dozens of times daily"
+      - bullet: "Tags @.claude in PR reviews to update CLAUDE.md"
+      - bullet: "Voice dictation (fn x2 on macOS) -- 3x faster prompts"
+      - subsection: "Philosophy"
+      - quote:
+          text: >-
+            A wrong fast answer is slower than a right slow answer. I optimize for total
+            iteration cost, not per-token expense.
+      - quote:
+          text: >-
+            My setup might be surprisingly vanilla! Claude Code works great out of the box.
+            There is no one correct way to use Claude Code: we intentionally build it so you
+            can customize it and hack it however you like.
+
+  - title: "Common Pitfalls"
+    type: pitfalls_list
+    pitfalls:
+      - title: "The Kitchen Sink Session"
+        problem: "Multiple unrelated tasks in one session. Context full of noise."
+        fix: "/clear between tasks."
+      - title: "Correcting Over and Over"
+        problem: "Failed approaches pile up. Context is polluted."
+        fix: "After two corrections, /clear and write a better initial prompt."
+      - title: "The Over-Specified CLAUDE.md"
+        problem: "Too long. Claude ignores half; important rules get lost."
+        fix: "Prune ruthlessly. Use hooks for non-negotiables."
+      - title: "The Trust-Then-Verify Gap"
+        problem: "Plausible-looking code that doesn't handle edge cases."
+        fix: "Always provide verification. Can't verify it? Don't ship it."
+      - title: "The Infinite Exploration"
+        problem: "'Investigate' without scoping. Claude reads hundreds of files."
+        fix: "Scope narrowly or delegate to subagents."
+      - title: "Skipping Plan Mode"
+        problem: "Jumping straight to code that solves the wrong problem."
+        fix: "Plan first. The time pays for itself."
+      - title: "Ignoring Context Usage"
+        problem: "Window fills up, Claude starts forgetting."
+        fix: "Set up /statusline. Use /compact and /clear proactively."
+
+  - title: "Test-Driven Development"
+    content:
+      - quote:
+          text: >-
+            Claude performs best when it has a clear, verifiable target; tests provide this
+            explicit target, allowing Claude to make changes, evaluate results, and
+            incrementally improve its code.
+          attribution: "Anthropic Engineering Blog"
+      - body: >-
+          TDD is Claude Code's killer discipline. A failing test gives Claude a concrete,
+          measurable goal. Without it, Claude writes code that looks right but may contain
+          subtle bugs. With it, Claude enters an autonomous loop: write code, run tests,
+          analyze failures, adjust, repeat -- until green.
+      - subsection: "The Red-Green-Refactor Cycle"
+      - heading: "1. RED: Write a failing test (you, not Claude)"
+      - body: >-
+          You define what correctness looks like. Claude figures out how to achieve it.
+          This is the critical separation of concerns.
+      - code: |
+          # You write this test, or describe it precisely:
+          Write a FAILING test for validateEmail.
+          It should reject 'user@.com' and accept 'a@b.co'.
+          Do NOT write implementation yet.
+      - heading: "2. GREEN: Let Claude make it pass"
+      - body: >-
+          Claude implements just enough code to pass the test. The test constrains scope
+          and prevents over-engineering.
+      - code: |
+          Now write the implementation to make all tests pass.
+          Do not modify the tests. Run them after each change.
+      - heading: "3. REFACTOR: Clean up while green"
+      - body: "All tests pass. Now simplify, remove duplication, improve naming."
+      - code: |
+          All tests pass. Refactor for clarity while keeping
+          them green.
+      - subsection: "TDD for Bug Fixes"
+      - body: "The most natural TDD use case. Reproduce the bug as a test, then let Claude fix it."
+      - code: |
+          Bug: login fails after session timeout.
+          1. Write a test that reproduces this (should FAIL)
+          2. Fix the implementation to make it pass
+          3. Run the full suite to confirm no regressions
+      - subsection: "Why TDD Works So Well with Claude"
+      - bullet: "Tests give Claude an autonomous feedback loop -- less human intervention"
+      - bullet: "Failing tests constrain scope -- Claude can't drift or over-engineer"
+      - bullet: "The full suite catches regressions Claude might not anticipate"
+      - bullet: "You define correctness; Claude figures out the how"
+      - tip: >-
+          Beware context pollution: when test-writing and implementation happen in the same
+          context, Claude subconsciously designs tests around the implementation it's planning.
+          For strict TDD, use separate sessions or subagents for each phase.
+      - subsection: "Kent Beck on AI + TDD"
+      - quote:
+          text: >-
+            Test-driven development is a superpower when working with AI agents -- unit tests
+            help ensure that AI agents don't introduce regressions.
+          attribution: "Kent Beck (creator of TDD)"
+      - subsection: "Enforcing TDD in Your Workflow"
+      - bullet: "Add 'Always follow TDD: write failing tests before implementation' to CLAUDE.md"
+      - bullet: "Add 'Never modify tests to make them pass -- only modify implementation' to CLAUDE.md"
+      - bullet: "Use TDD Guard (github.com/nizos/tdd-guard) -- a hook that blocks implementation without failing tests"
+      - bullet: "Create a /tdd skill that codifies the red-green-refactor cycle"
+
+sources:
+  - "Official docs (code.claude.com/docs) | Boris Cherny @bcherny on X"
+  - "Setup thread: x.com/bcherny/status/2007179832300581177"
+  - "Team tips: x.com/bcherny/status/2017742741636321619"
+  - "anthropic.com/engineering/claude-code-best-practices"
+  - "thenewstack.io | nathanfox.net | Kent Beck via Pragmatic Engineer"

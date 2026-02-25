@@ -1,0 +1,65 @@
+name: Update Claude Code Guide
+
+on:
+  schedule:
+    - cron: "0 8 * * *"   # daily at 08:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-guide
+  cancel-in-progress: true
+
+jobs:
+  update-guide:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install -g @anthropic-ai/claude-code
+
+      # Claude searches the web and edits content.yaml ONLY
+      - name: Check for updates
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          claude -p "$(cat .github/prompts/update-guide-prompt.md)" \
+            --allowedTools "WebSearch,WebFetch,Read,Edit" \
+            --max-turns 25 \
+            --model claude-sonnet-4-6
+
+      # Deterministic validation — catches structural errors Claude might make
+      - name: Validate content
+        if: always()
+        run: python3 validate_content.py
+
+      # Only proceed if content.yaml actually changed
+      - name: Check for changes
+        id: diff
+        run: git diff --quiet content.yaml || echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Regenerate PDF
+        if: steps.diff.outputs.changed == 'true'
+        run: python3 generate_guide.py
+
+      - name: Commit and push
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add content.yaml Claude_Code_Tips_and_Best_Practices.pdf
+          git commit -m "chore: auto-update guide content $(date +%Y-%m-%d)
+
+          Co-Authored-By: Claude <noreply@anthropic.com>"
+          git push
