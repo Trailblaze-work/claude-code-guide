@@ -137,7 +137,7 @@ sections:
       - bullet: "./CLAUDE.md -- Project root: check into git, shared with team"
       - bullet: "./CLAUDE.local.md -- Local only (.gitignore this)"
       - bullet: "Parent directories -- Useful for monorepos"
-      - bullet: "Child directories -- Loaded on demand"
+      - bullet: "Auto memory (~/.claude/projects/) -- Claude writes its own notes; manage with /memory"
       - tip: >-
           Run /init to auto-generate a starter CLAUDE.md. It analyzes your codebase
           to detect build systems, test frameworks, and code patterns. Use it as a
