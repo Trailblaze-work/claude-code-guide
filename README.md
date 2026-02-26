@@ -52,4 +52,4 @@ python generate_guide.py     # produce PDF
 
 ---
 
-Built by [Trailblaze](https://trailblaze.work)
+<sub>Built by <a href="https://trailblaze.work"><strong>Trailblaze</strong></a> — we help companies deploy AI across their workforce. Strategy, implementation, training, and governance. <a href="mailto:hello@trailblaze.work">Get in touch</a>.</sub>
