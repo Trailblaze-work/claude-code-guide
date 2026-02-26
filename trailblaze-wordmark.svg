@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3661" height="280" viewBox="0 0 3661 280">
+  <defs>
+    <linearGradient id="fire" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e89a2e"/>
+      <stop offset="50%" stop-color="#e86a2e"/>
+      <stop offset="100%" stop-color="#ff4d1a"/>
+    </linearGradient>
+  </defs>
+  <text x="1830" y="230" text-anchor="middle"
+        font-family="Syne, sans-serif" font-weight="800" font-size="360"
+        letter-spacing="-0.02em"
+        fill="url(#fire)">TRAILBLAZE</text>
+</svg>
