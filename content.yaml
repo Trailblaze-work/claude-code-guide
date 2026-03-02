@@ -284,7 +284,7 @@ sections:
       - subsection: "Ways to Run in Parallel"
       - bullet: "claude -w <name> -- each session in its own worktree, run in separate terminals"
       - bullet: "Claude Code desktop app -- visual session management"
-      - bullet: "claude.ai/code -- Anthropic's cloud, isolated VMs"
+      - bullet: "claude --remote -- cloud-hosted tasks on Anthropic's servers; /tasks to monitor, /teleport to continue locally"
       - bullet: "Terminal tabs -- numbered 1-5, with OS notifications"
       - bullet: "Agent Teams (experimental) -- coordinated multi-instance sessions with shared task list"
       - subsection: "Remote Control: Continue from Any Device"
