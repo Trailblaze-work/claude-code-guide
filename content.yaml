@@ -283,6 +283,7 @@ sections:
           and WorktreeRemove hooks to replace the default git behavior.
       - subsection: "Ways to Run in Parallel"
       - bullet: "claude -w <name> -- each session in its own worktree, run in separate terminals"
+      - bullet: "/batch <instruction> -- decomposes large-scale changes into 5-30 units, spawns one agent per unit in its own worktree, each opens a PR"
       - bullet: "Claude Code desktop app -- visual session management"
       - bullet: "claude --remote -- cloud-hosted tasks on Anthropic's servers; /tasks to monitor, /teleport to continue locally"
       - bullet: "Terminal tabs -- numbered 1-5, with OS notifications"
@@ -351,12 +352,6 @@ sections:
           claude -p "prompt" --max-budget-usd 2.00      # Cap spend per run
           claude -p "prompt" --max-turns 5              # Limit agentic turns
           claude -p "prompt" --fallback-model sonnet    # Fallback if overloaded
-
-          # Fan-out with worktree isolation per task
-          for file in $(cat files.txt); do
-            claude -w --dangerously-skip-permissions \
-              -p "Migrate $file" &
-          done
 
   - title: "Skills, Hooks & MCP"
     content:
