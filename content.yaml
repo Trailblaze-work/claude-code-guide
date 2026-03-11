@@ -136,6 +136,7 @@ sections:
       - bullet: "~/.claude/CLAUDE.md -- Global: all sessions"
       - bullet: "./CLAUDE.md -- Project root: check into git, shared with team"
       - bullet: "./CLAUDE.local.md -- Local only (.gitignore this)"
+      - bullet: ".claude/rules/*.md -- Topic-specific rule files; path-scoped rules only load when Claude works with matching files"
       - bullet: "Parent directories -- Useful for monorepos"
       - bullet: "Auto memory (~/.claude/projects/) -- Claude writes its own notes; manage with /memory"
       - tip: >-
@@ -152,7 +153,6 @@ sections:
       - bullet: "Things Claude can figure out by reading code"
       - bullet: "Standard conventions Claude already knows"
       - bullet: "Detailed API docs (link instead), long tutorials"
-      - bullet: "Self-evident practices like 'write clean code'"
       - subsection: "Example"
       - code: |
           # Code style
