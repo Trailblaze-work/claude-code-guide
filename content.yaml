@@ -185,7 +185,7 @@ sections:
           /clear              Reset context entirely
           /compact [focus]     Compress, optionally keep a focus
           /context             Visualize current context usage
-          /sandbox             Toggle OS-level filesystem/network isolation
+          /btw [question]      Ask a side question without adding to context
           /statusline          Set up the status line UI
       - subsection: "When to Clear"
       - bullet: "Between unrelated tasks -- always"
@@ -440,7 +440,7 @@ sections:
           Boris created Claude Code and leads the team at Anthropic. Distilled from
           his X/Twitter threads in January-February 2026.
       - subsection: "Setup"
-      - bullet: "Terminal: Ghostty (synchronized rendering, GPU acceleration)"
+      - bullet: "Fast Mode (/fast) -- 2.5x faster Opus 4.6 when speed matters; toggle mid-session"
       - bullet: "Model: Opus with extended thinking for everything"
       - bullet: "5 terminal tabs + 5-10 sessions on claude.ai/code + mobile"
       - bullet: "Status line showing context usage and current branch"
