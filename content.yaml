@@ -343,7 +343,6 @@ sections:
           existing OAuth utilities to reuse.
       - bullet: 'Research: "use subagents to investigate X"'
       - bullet: 'Verification: "use a subagent to review this code"'
-      - bullet: 'Scale: "use 5 subagents to explore the codebase"'
       - bullet: "Background: Ctrl+B to send to background"
       - subsection: "Headless Mode & Fan-Out"
       - code: |
@@ -433,6 +432,7 @@ sections:
           text: >-
             Use /permissions to pre-allow safe commands rather than broadly skipping
             security checks with --dangerously-skip-permissions.
+      - bullet: "Auto Mode (--permission-mode auto) -- background classifier auto-approves safe local actions, blocks risky ones (force push, mass delete, IAM changes); announced March 2026, requires Team/Enterprise"
 
   - title: "Boris Cherny's Workflow"
     content:
