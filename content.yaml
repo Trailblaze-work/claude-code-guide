@@ -285,7 +285,7 @@ sections:
       - bullet: "claude -w <name> -- each session in its own worktree, run in separate terminals"
       - bullet: "/batch <instruction> -- decomposes large-scale changes into 5-30 units, spawns one agent per unit in its own worktree, each opens a PR"
       - bullet: "/loop <interval> <prompt> -- schedule recurring tasks inside a session (poll CI, monitor deployments, check builds); session-scoped"
-      - bullet: "Claude Code desktop app -- visual session management"
+      - bullet: "/schedule <task> -- create persistent cloud-scheduled tasks (daily PR review, nightly CI triage, weekly audits); runs on Anthropic infrastructure even when your machine is off"
       - bullet: "claude --remote -- cloud-hosted tasks on Anthropic's servers; /tasks to monitor, /teleport to continue locally"
       - bullet: "Agent Teams (experimental) -- coordinated multi-instance sessions with shared task list"
       - subsection: "Remote Control: Continue from Any Device"
