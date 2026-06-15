@@ -430,7 +430,7 @@ sections:
           text: >-
             Use /permissions to pre-allow safe commands rather than broadly skipping
             security checks with --dangerously-skip-permissions.
-      - bullet: "Auto Mode (--permission-mode auto) -- background classifier auto-approves safe local actions, blocks risky ones (force push, mass delete, IAM changes); available on Max, Team, Enterprise, and API plans"
+      - bullet: "Auto Mode (--permission-mode auto) -- background classifier auto-approves safe local actions, blocks risky ones (force push, mass delete, IAM changes); available on all plans"
 
   - title: "Boris Cherny's Workflow"
     content:
