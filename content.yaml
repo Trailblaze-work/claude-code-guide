@@ -287,7 +287,7 @@ sections:
       - bullet: "/loop <interval> <prompt> -- schedule recurring tasks inside a session (poll CI, monitor deployments, check builds); session-scoped"
       - bullet: "/schedule <task> -- create persistent cloud-scheduled tasks (daily PR review, nightly CI triage, weekly audits); runs on Anthropic infrastructure even when your machine is off"
       - bullet: "claude --remote -- cloud-hosted tasks on Anthropic's servers; /tasks to monitor, /teleport to continue locally"
-      - bullet: "/ultrareview -- deploys a cloud fleet of parallel agents to hunt for bugs; findings land in your CLI or Desktop automatically (research preview)"
+      - bullet: "claude agents -- unified dashboard for all background sessions: what's running, what needs your input, and what's done; dispatch new sessions from one screen"
       - subsection: "Remote Control: Continue from Any Device"
       - body: >-
           Start a session locally and continue it from your phone or any browser.
