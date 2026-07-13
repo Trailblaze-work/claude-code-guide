@@ -286,7 +286,7 @@ sections:
       - bullet: "/batch <instruction> -- decomposes large-scale changes into 5-30 units, spawns one agent per unit in its own worktree, each opens a PR"
       - bullet: "/loop <interval> <prompt> -- schedule recurring tasks inside a session (poll CI, monitor deployments, check builds); session-scoped"
       - bullet: "/schedule <task> -- create persistent cloud-scheduled tasks (daily PR review, nightly CI triage, weekly audits); runs on Anthropic infrastructure even when your machine is off"
-      - bullet: "claude --remote -- cloud-hosted tasks on Anthropic's servers; /tasks to monitor, /teleport to continue locally"
+      - bullet: "/ultrareview [<PR#>] -- spawns a cloud fleet of agents to hunt bugs in your current branch or a specific PR; run before merging critical changes like auth or migrations"
       - bullet: "claude agents -- unified dashboard for all background sessions: what's running, what needs your input, and what's done; dispatch new sessions from one screen"
       - subsection: "Remote Control: Continue from Any Device"
       - body: >-
